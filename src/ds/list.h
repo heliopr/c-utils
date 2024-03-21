@@ -100,24 +100,50 @@ void list_destroy(list *l) {
 
 
 
-list *list_int_new() {
-    return list_new(sizeof(int));
-}
+list *list_int_new() { return list_new(sizeof(int)); }
 
-bool list_insert_int(list *l, int i, size_t pos) {
-    return list_insert(l, &i, pos);
-}
+bool list_insert_int(list *l, int i, size_t pos) { return list_insert(l, &i, pos); }
 
-bool list_append_int(list *l, int i) {
-    return list_append(l, &i);
-}
+bool list_append_int(list *l, int i) { return list_append(l, &i); }
 
-bool list_prepend_int(list *l, int i) {
-    return list_prepend(l, &i);
-}
+bool list_prepend_int(list *l, int i) { return list_prepend(l, &i); }
 
-int list_get_int(list *l, size_t pos) {
-    return *((int*)list_get(l, pos));
-}
+int list_get_int(list *l, size_t pos) { return *((int*)list_get(l, pos)); }
+
+
+
+list *list_float_new() { return list_new(sizeof(float)); }
+
+bool list_insert_float(list *l, float i, size_t pos) { return list_insert(l, &i, pos); }
+
+bool list_append_float(list *l, float i) { return list_append(l, &i); }
+
+bool list_prepend_float(list *l, float i) { return list_prepend(l, &i); }
+
+float list_get_float(list *l, size_t pos) { return *((float*)list_get(l, pos)); }
+
+
+
+list *list_double_new() { return list_new(sizeof(double)); }
+
+bool list_insert_double(list *l, double i, size_t pos) { return list_insert(l, &i, pos); }
+
+bool list_append_double(list *l, double i) { return list_append(l, &i); }
+
+bool list_prepend_double(list *l, double i) { return list_prepend(l, &i); }
+
+double list_get_double(list *l, size_t pos) { return *((double*)list_get(l, pos)); }
+
+
+
+list *list_char_new() { return list_new(sizeof(char)); }
+
+bool list_insert_char(list *l, char i, size_t pos) { return list_insert(l, &i, pos); }
+
+bool list_append_char(list *l, char i) { return list_append(l, &i); }
+
+bool list_prepend_char(list *l, char i) { return list_prepend(l, &i); }
+
+char list_get_char(list *l, size_t pos) { return *((char*)list_get(l, pos)); }
 
 #endif
