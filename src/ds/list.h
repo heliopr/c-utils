@@ -64,6 +64,13 @@ bool list_insert(list *l, const void *e, size_t pos) {
     return true;
 }
 
+bool list_set(list *l, const void *e, size_t pos) {
+    if (l == NULL || e == NULL || pos < 0 || pos > l->size) return false;
+
+    memcpy(l->p+(pos*l->element_size), e, l->element_size);
+    return true;
+}
+
 bool list_append(list *l, const void *e) {
     return list_insert(l, e, l->size);
 }
@@ -102,11 +109,13 @@ void list_destroy(list *l) {
 
 list *list_int_new() { return list_new(sizeof(int)); }
 
-bool list_insert_int(list *l, int i, size_t pos) { return list_insert(l, &i, pos); }
+bool list_insert_int(list *l, int e, size_t pos) { return list_insert(l, &e, pos); }
 
-bool list_append_int(list *l, int i) { return list_append(l, &i); }
+bool list_set_int(list *l, int e, size_t pos) { return list_set(l, &e, pos); }
 
-bool list_prepend_int(list *l, int i) { return list_prepend(l, &i); }
+bool list_append_int(list *l, int e) { return list_append(l, &e); }
+
+bool list_prepend_int(list *l, int e) { return list_prepend(l, &e); }
 
 int list_get_int(list *l, size_t pos) { return *((int*)list_get(l, pos)); }
 
@@ -114,11 +123,13 @@ int list_get_int(list *l, size_t pos) { return *((int*)list_get(l, pos)); }
 
 list *list_float_new() { return list_new(sizeof(float)); }
 
-bool list_insert_float(list *l, float i, size_t pos) { return list_insert(l, &i, pos); }
+bool list_insert_float(list *l, float e, size_t pos) { return list_insert(l, &e, pos); }
 
-bool list_append_float(list *l, float i) { return list_append(l, &i); }
+bool list_set_float(list *l, float e, size_t pos) { return list_set(l, &e, pos); }
 
-bool list_prepend_float(list *l, float i) { return list_prepend(l, &i); }
+bool list_append_float(list *l, float e) { return list_append(l, &e); }
+
+bool list_prepend_float(list *l, float e) { return list_prepend(l, &e); }
 
 float list_get_float(list *l, size_t pos) { return *((float*)list_get(l, pos)); }
 
@@ -126,11 +137,13 @@ float list_get_float(list *l, size_t pos) { return *((float*)list_get(l, pos)); 
 
 list *list_double_new() { return list_new(sizeof(double)); }
 
-bool list_insert_double(list *l, double i, size_t pos) { return list_insert(l, &i, pos); }
+bool list_insert_double(list *l, double e, size_t pos) { return list_insert(l, &e, pos); }
 
-bool list_append_double(list *l, double i) { return list_append(l, &i); }
+bool list_set_double(list *l, double e, size_t pos) { return list_set(l, &e, pos); }
 
-bool list_prepend_double(list *l, double i) { return list_prepend(l, &i); }
+bool list_append_double(list *l, double e) { return list_append(l, &e); }
+
+bool list_prepend_double(list *l, double e) { return list_prepend(l, &e); }
 
 double list_get_double(list *l, size_t pos) { return *((double*)list_get(l, pos)); }
 
@@ -138,11 +151,13 @@ double list_get_double(list *l, size_t pos) { return *((double*)list_get(l, pos)
 
 list *list_char_new() { return list_new(sizeof(char)); }
 
-bool list_insert_char(list *l, char i, size_t pos) { return list_insert(l, &i, pos); }
+bool list_insert_char(list *l, char e, size_t pos) { return list_insert(l, &e, pos); }
 
-bool list_append_char(list *l, char i) { return list_append(l, &i); }
+bool list_set_char(list *l, char e, size_t pos) { return list_set(l, &e, pos); }
 
-bool list_prepend_char(list *l, char i) { return list_prepend(l, &i); }
+bool list_append_char(list *l, char e) { return list_append(l, &e); }
+
+bool list_prepend_char(list *l, char e) { return list_prepend(l, &e); }
 
 char list_get_char(list *l, size_t pos) { return *((char*)list_get(l, pos)); }
 
