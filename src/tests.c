@@ -3,32 +3,20 @@
 #include "ds/list.h"
 
 int main() {
-    list *l = list_char_new();
+    list *l = list_int_new();
+    int n;
+    scanf("%d", &n);
 
-    int a = 10;
-    printf("%d\n", list_append_char(l, a));
-    a = 12;
-    printf("%d\n", list_append_char(l, a));
-    a = 11;
-    printf("%d\n", list_append_char(l, a));
-    a = -5;
-    printf("%d\n", list_append_char(l, a));
-    a = -6;
-    printf("%d\n", list_prepend_char(l, a));
+    for (int i = 0; i < n; i++) {
+        int x;
+        scanf("%d", &x);
+        list_append_int(l, x);
+    }
 
-    a = 37;
-    printf("%d\n", list_insert_char(l, a, 3));
-    printf("%d\n", list_insert_char(l, a, 10));
-    printf("%d\n", list_insert_char(l, a, -1));
+    printf(": ");
 
-    printf("%d\n", list_remove(l, 1));
-
-    printf("LALA %d\n", list_get_char(l, 3));
-
-    //printf("%d %d %d\n", l->size, l->allocated, l->element_size);
-    
-    LIST_FOREACH_CHAR(i, l) {
-        printf("%d ", *i);
+    LIST_FOREACH_INT(x, l) {
+        printf("%d ", *x);
     }
     printf("\n");
 
