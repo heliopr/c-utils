@@ -6,6 +6,7 @@
 - [ ] queue
 - [ ] stack
 - [ ] hashmap
+- [ ] set
 - [ ] graph
 
 ## Math
