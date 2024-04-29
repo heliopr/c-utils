@@ -39,5 +39,5 @@ int test_sorting() {
 }
 
 int main() {
-    
+    test_sorting();
 }
