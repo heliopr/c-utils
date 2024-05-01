@@ -75,7 +75,7 @@ void *list_get(list *l, size_t pos) {
 }
 
 // i stole this code from somewhere and modified it
-void _list_mergesubs(list *l, size_t p, size_t q, size_t r, bool (*cmp)(void*, void*)) {
+void _list_mergesubs(list *l, size_t p, size_t q, size_t r, bool (*cmp)(const void*, const void*, size_t)) {
     size_t e_size = l->element_size;
     size_t n1 = q-p+1;
     size_t n2 = r-q;
@@ -94,7 +94,7 @@ void _list_mergesubs(list *l, size_t p, size_t q, size_t r, bool (*cmp)(void*, v
     k = p;
 
     while (i < n1 && j < n2) {
-        if (cmp(L+(i*e_size), M+(j*e_size))) {
+        if ((*cmp)(L+(i*e_size), M+(j*e_size), l->element_size)) {
             list_set(l, L+(i*e_size), k);
             i++;
         } else {
@@ -120,7 +120,7 @@ void _list_mergesubs(list *l, size_t p, size_t q, size_t r, bool (*cmp)(void*, v
     free(M);
 }
 
-void _list_mergesort(list *l, size_t i, size_t j, bool (cmp)(void*, void*)) {
+void _list_mergesort(list *l, size_t i, size_t j, bool (*cmp)(const void*, const void*, size_t)) {
     if (i < j) {
         size_t m = i + (j - i) / 2;
 
@@ -130,7 +130,7 @@ void _list_mergesort(list *l, size_t i, size_t j, bool (cmp)(void*, void*)) {
     }
 }
 
-void list_sort(list *l, bool (cmp)(void*, void*)) {
+void list_sort(list *l, bool (*cmp)(const void*, const void*, size_t)) {
     _list_mergesort(l, 0, l->size-1, cmp);
 }
 
@@ -142,6 +142,15 @@ void list_destroy(list *l) {
 }
 
 
+/* dosent work well with numbers
+bool list_sortcmp(const void *x, const void *y, size_t size) {
+    return memcmp(x, y, size) < 0;
+}
+
+bool list_revsortcmp(const void *x, const void *y, size_t size) {
+    return !list_sortcmp(x, y, size);
+}*/
+
 
 list *list_int_new() { return list_new(sizeof(int)); }
 bool list_insert_int(list *l, int e, size_t pos) { return list_insert(l, &e, pos); }
@@ -149,8 +158,8 @@ bool list_set_int(list *l, int e, size_t pos) { return list_set(l, &e, pos); }
 bool list_append_int(list *l, int e) { return list_append(l, &e); }
 bool list_prepend_int(list *l, int e) { return list_prepend(l, &e); }
 int list_get_int(list *l, size_t pos) { return *((int*)list_get(l, pos)); }
-bool list_cmp_int(void *x, void *y) { return *((int*)x) <= *((int*)y); }
-bool list_revcmp_int(void *x, void *y) { return *((int*)x) >= *((int*)y); }
+bool list_cmp_int(const void *x, const void *y, size_t s) { return *((int*)x) <= *((int*)y); }
+bool list_revcmp_int(const void *x, const void *y, size_t s) { return *((int*)x) >= *((int*)y); }
 
 
 list *list_float_new() { return list_new(sizeof(float)); }
@@ -159,8 +168,8 @@ bool list_set_float(list *l, float e, size_t pos) { return list_set(l, &e, pos);
 bool list_append_float(list *l, float e) { return list_append(l, &e); }
 bool list_prepend_float(list *l, float e) { return list_prepend(l, &e); }
 float list_get_float(list *l, size_t pos) { return *((float*)list_get(l, pos)); }
-bool list_cmp_float(void *x, void *y) { return *((float*)x) <= *((float*)y); }
-bool list_revcmp_float(void *x, void *y) { return *((float*)x) >= *((float*)y); }
+bool list_cmp_float(const void *x, const void *y, size_t s) { return *((float*)x) <= *((float*)y); }
+bool list_revcmp_float(const void *x, const void *y, size_t s) { return *((float*)x) >= *((float*)y); }
 
 
 list *list_double_new() { return list_new(sizeof(double)); }
@@ -169,8 +178,8 @@ bool list_set_double(list *l, double e, size_t pos) { return list_set(l, &e, pos
 bool list_append_double(list *l, double e) { return list_append(l, &e); }
 bool list_prepend_double(list *l, double e) { return list_prepend(l, &e); }
 double list_get_double(list *l, size_t pos) { return *((double*)list_get(l, pos)); }
-bool list_cmp_double(void *x, void *y) { return *((double*)x) <= *((double*)y); }
-bool list_revcmp_double(void *x, void *y) { return *((double*)x) >= *((double*)y); }
+bool list_cmp_double(const void *x, const void *y, size_t s) { return *((double*)x) <= *((double*)y); }
+bool list_revcmp_double(const void *x, const void *y, size_t s) { return *((double*)x) >= *((double*)y); }
 
 
 list *list_char_new() { return list_new(sizeof(char)); }
@@ -179,5 +188,5 @@ bool list_set_char(list *l, char e, size_t pos) { return list_set(l, &e, pos); }
 bool list_append_char(list *l, char e) { return list_append(l, &e); }
 bool list_prepend_char(list *l, char e) { return list_prepend(l, &e); }
 char list_get_char(list *l, size_t pos) { return *((char*)list_get(l, pos)); }
-bool list_cmp_char(void *x, void *y) { return *((char*)x) <= *((char*)y); }
-bool list_revcmp_char(void *x, void *y) { return *((char*)x) >= *((char*)y); }
+bool list_cmp_char(const void *x, const void *y, size_t s) { return *((char*)x) <= *((char*)y); }
+bool list_revcmp_char(const void *x, const void *y, size_t s) { return *((char*)x) >= *((char*)y); }

@@ -7,7 +7,7 @@
 - [ ] stack
 - [ ] hashmap
 - [ ] set
-- [ ] graph
+- [ ] binary tree
 
 ## Math
 - [ ] vector

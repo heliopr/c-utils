@@ -25,6 +25,10 @@ int test_sorting() {
         for (int i = 0; i < n && !falhou; i++) {
             if (list_get_int(l, i) != list_get_int(l2, i)) {
                 printf("FALHOU\n");
+                for (int j = 0; j < n; j++) {
+                    printf("%d ", list_get_int(l, j));
+                }
+                printf("\n");
                 falhou = true;
                 break;
             }

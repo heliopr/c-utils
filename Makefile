@@ -1,5 +1,5 @@
 build:
-	gcc ./src/*.c -o out
+	gcc ./src/*.c ./src/ds/*.c -o out
 
 run:
 	./out

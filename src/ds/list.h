@@ -31,10 +31,13 @@ bool list_append(list *l, const void *e);
 bool list_prepend(list *l, const void *e);
 bool list_remove(list *l, size_t pos);
 void *list_get(list *l, size_t pos);
-void _list_mergesubs(list *l, size_t p, size_t q, size_t r, bool (*cmp)(void*, void*));
-void _list_mergesort(list *l, size_t i, size_t j, bool (cmp)(void*, void*));
-void list_sort(list *l, bool (cmp)(void*, void*));
+void _list_mergesubs(list *l, size_t p, size_t q, size_t r, bool (*cmp)(const void*, const void*, size_t));
+void _list_mergesort(list *l, size_t i, size_t j, bool (*cmp)(const void*, const void*, size_t));
+void list_sort(list *l, bool (*cmp)(const void*, const void*, size_t));
 void list_destroy(list *l);
+
+/*bool list_sortcmp(const void *x, const void *y, size_t size);
+bool list_revsortcmp(const void *x, const void *y, size_t size);*/
 
 
 
@@ -44,8 +47,8 @@ bool list_set_int(list *l, int e, size_t pos);
 bool list_append_int(list *l, int e);
 bool list_prepend_int(list *l, int e);
 int list_get_int(list *l, size_t pos);
-bool list_cmp_int(void *x, void *y);
-bool list_revcmp_int(void *x, void *y);
+bool list_cmp_int(const void *x, const void *y, size_t s);
+bool list_revcmp_int(const void *x, const void *y, size_t s);
 
 
 list *list_float_new();
@@ -54,8 +57,8 @@ bool list_set_float(list *l, float e, size_t pos);
 bool list_append_float(list *l, float e);
 bool list_prepend_float(list *l, float e);
 float list_get_float(list *l, size_t pos);
-bool list_cmp_float(void *x, void *y);
-bool list_revcmp_float(void *x, void *y);
+bool list_cmp_float(const void *x, const void *y, size_t s);
+bool list_revcmp_float(const void *x, const void *y, size_t s);
 
 
 list *list_double_new();
@@ -64,8 +67,8 @@ bool list_set_double(list *l, double e, size_t pos);
 bool list_append_double(list *l, double e);
 bool list_prepend_double(list *l, double e);
 double list_get_double(list *l, size_t pos);
-bool list_cmp_double(void *x, void *y);
-bool list_revcmp_double(void *x, void *y);
+bool list_cmp_double(const void *x, const void *y, size_t s);
+bool list_revcmp_double(const void *x, const void *y, size_t s);
 
 
 list *list_char_new();
@@ -74,7 +77,7 @@ bool list_set_char(list *l, char e, size_t pos);
 bool list_append_char(list *l, char e);
 bool list_prepend_char(list *l, char e);
 char list_get_char(list *l, size_t pos);
-bool list_cmp_char(void *x, void *y);
-bool list_revcmp_char(void *x, void *y);
+bool list_cmp_char(const void *x, const void *y, size_t s);
+bool list_revcmp_char(const void *x, const void *y, size_t s);
 
 #endif
