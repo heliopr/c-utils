@@ -31,8 +31,6 @@ bool list_append(list *l, const void *e);
 bool list_prepend(list *l, const void *e);
 bool list_remove(list *l, size_t pos);
 void *list_get(list *l, size_t pos);
-void _list_mergesubs(list *l, size_t p, size_t q, size_t r, bool (*cmp)(const void*, const void*, size_t));
-void _list_mergesort(list *l, size_t i, size_t j, bool (*cmp)(const void*, const void*, size_t));
 void list_sort(list *l, bool (*cmp)(const void*, const void*, size_t));
 void list_destroy(list *l);
 
