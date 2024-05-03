@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "ds/list.h"
+#include "ds/linkedlist.h"
 
 int test_sorting() {
     int n;
@@ -42,6 +43,26 @@ int test_sorting() {
     return 0;
 }
 
+int test_llist() {
+    llist *ll = llist_new(sizeof(int));
+
+    int x = 13;
+    printf("s %d\n", llist_append(ll, &x));
+    x = 2; printf("s %d\n", llist_append(ll, &x));
+    x = 8; printf("s %d\n", llist_prepend(ll, &x));
+    x = -9; printf("s %d\n", llist_append(ll, &x));
+    x = 17; printf("s %d\n", llist_prepend(ll, &x));
+
+    printf("d %d\n", ll->size);
+    
+    for (int i = 0; i < ll->size; i++) {
+        llnode *n = llist_get(ll, i);
+        printf("%d ", *((int*)n->data));
+    }
+    printf("\n");
+}
+
 int main() {
-    test_sorting();
+    //test_sorting();
+    test_llist();
 }

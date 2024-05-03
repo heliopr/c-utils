@@ -62,6 +62,16 @@ bool llist_insert_at(llist *ll, const void *e, size_t pos) {
     return false;
 }
 
+bool llist_prepend(llist *ll, const void *e) {
+    if (ll == NULL || e == NULL) return false;
+    return llist_insert_at(ll, e, 0);
+}
+
+bool llist_append(llist *ll, const void *e) {
+    if (ll == NULL || e == NULL) return false;
+    return llist_insert_at(ll, e, ll->size);
+}
+
 // untested stupid approach
 bool llist_remove(llist *ll, llnode *node) {
     if (ll == NULL || node == NULL) return false;
@@ -90,7 +100,7 @@ llnode *llist_get(llist *ll, size_t pos) {
     if (ll == NULL || pos < 0 || pos >= ll->size) return NULL;
 
     llnode *node = ll->first;
-    for (int i = 0; i < pos; i++) {
+    for (int i = 0; i <= pos; i++) {
         if (node == NULL) return NULL;
 
         if (i == pos)
