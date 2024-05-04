@@ -1,6 +1,7 @@
 #include "linkedlist.h"
 
 #include <string.h>
+#include <stdint.h>
 
 llist *llist_new(size_t element_size) {
     llist *ll = (llist*)malloc(sizeof(llist));
@@ -72,7 +73,6 @@ bool llist_append(llist *ll, const void *e) {
     return llist_insert_at(ll, e, ll->size);
 }
 
-// untested stupid approach
 bool llist_remove(llist *ll, llnode *node) {
     if (ll == NULL || node == NULL) return false;
 
@@ -111,4 +111,38 @@ llnode *llist_get(llist *ll, size_t pos) {
     }
 
     return NULL;
+}
+
+llnode *llist_find(llist *ll, const void *e) {
+    if (ll == NULL || e == NULL) return NULL;
+
+    llnode *node = ll->first;
+    for (int i = 0; i < ll->size; i++) {
+        if (node == NULL) break;
+
+        if (memcmp(node->data, e, ll->element_size) == 0)
+            return node;
+
+        if (node->next == NULL) return NULL;
+        node = node->next;
+    }
+
+    return NULL;
+}
+
+size_t llist_find_pos(llist *ll, const void *e) {
+    if (ll == NULL || e == NULL) return SIZE_MAX;
+
+    llnode *node = ll->first;
+    for (int i = 0; i < ll->size; i++) {
+        if (node == NULL) break;
+
+        if (memcmp(node->data, e, ll->element_size) == 0)
+            return i;
+
+        if (node->next == NULL) break;
+        node = node->next;
+    }
+
+    return SIZE_MAX;
 }

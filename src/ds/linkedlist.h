@@ -21,6 +21,7 @@ bool llist_prepend(llist *ll, const void *e);
 bool llist_append(llist *ll, const void *e);
 bool llist_remove(llist *ll, llnode *node);
 llnode *llist_get(llist *ll, size_t pos);
-llnode *llist_find(llist *ll, const void *value); // not implemented
+llnode *llist_find(llist *ll, const void *e); 
+size_t llist_find_pos(llist *ll, const void *e);
 
 #endif

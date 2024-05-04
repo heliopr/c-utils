@@ -53,8 +53,19 @@ int test_llist() {
     x = -9; printf("s %d\n", llist_append(ll, &x));
     x = 17; printf("s %d\n", llist_prepend(ll, &x));
 
+    
+
     printf("d %d\n", ll->size);
     
+    for (int i = 0; i < ll->size; i++) {
+        llnode *n = llist_get(ll, i);
+        printf("%d ", *((int*)n->data));
+    }
+    printf("\n\n");
+
+    printf("r %d\n", llist_remove(ll, llist_get(ll, 2)));
+    printf("d %d\n", ll->size);
+
     for (int i = 0; i < ll->size; i++) {
         llnode *n = llist_get(ll, i);
         printf("%d ", *((int*)n->data));
