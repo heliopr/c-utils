@@ -43,31 +43,31 @@ int test_sorting() {
     return 0;
 }
 
-int test_llist() {
-    llist *ll = llist_new(sizeof(int));
+int test_linkedlist() {
+    linkedlist *ll = linkedlist_new(sizeof(int));
 
     int x = 13;
-    printf("s %d\n", llist_append(ll, &x));
-    x = 2; printf("s %d\n", llist_append(ll, &x));
-    x = 8; printf("s %d\n", llist_prepend(ll, &x));
-    x = -9; printf("s %d\n", llist_append(ll, &x));
-    x = 17; printf("s %d\n", llist_prepend(ll, &x));
+    printf("s %d\n", linkedlist_append(ll, &x));
+    x = 2; printf("s %d\n", linkedlist_append(ll, &x));
+    x = 8; printf("s %d\n", linkedlist_prepend(ll, &x));
+    x = -9; printf("s %d\n", linkedlist_append(ll, &x));
+    x = 17; printf("s %d\n", linkedlist_prepend(ll, &x));
 
     
 
     printf("d %d\n", ll->size);
     
     for (int i = 0; i < ll->size; i++) {
-        llnode *n = llist_get(ll, i);
+        llnode *n = linkedlist_get(ll, i);
         printf("%d ", *((int*)n->data));
     }
     printf("\n\n");
 
-    printf("r %d\n", llist_remove(ll, llist_get(ll, 2)));
+    printf("r %d\n", linkedlist_remove(ll, linkedlist_get(ll, 2)));
     printf("d %d\n", ll->size);
 
     for (int i = 0; i < ll->size; i++) {
-        llnode *n = llist_get(ll, i);
+        llnode *n = linkedlist_get(ll, i);
         printf("%d ", *((int*)n->data));
     }
     printf("\n");
@@ -75,5 +75,5 @@ int test_llist() {
 
 int main() {
     //test_sorting();
-    test_llist();
+    test_linkedlist();
 }
