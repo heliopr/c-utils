@@ -73,7 +73,51 @@ int test_linkedlist() {
     printf("\n");
 }
 
+struct arena {
+    void **allocations;
+    int num_allocations, allocated;
+};
+
+void arena_init(struct arena *a) {
+    a->num_allocations = 0;
+    a->allocated = 1;
+    a->allocations = malloc(1 * sizeof(void*));
+}
+
+void *arena_alloc(struct arena *a, size_t size) {
+    void *mem = malloc(size);
+
+    if (a->num_allocations == a->allocated) {
+        a->allocated *= 2;
+        a->allocations = realloc(a->allocations, a->allocated * sizeof(void*));
+    }
+
+    a->allocations[a->num_allocations] = mem;
+    a->num_allocations++;
+    return mem;
+}
+
+void arena_clear(struct arena *a) {
+    for (int i = 0; i < a->num_allocations; i++) {
+        free(a->allocations[i]);
+    }
+
+    free(a->allocations);
+}
+
 int main() {
     //test_sorting();
-    test_linkedlist();
+    //test_linkedlist();
+
+    struct arena a;
+    arena_init(&a);
+
+    int *my_int = arena_alloc(&a, sizeof(int));
+    *my_int = 11;
+
+    printf("%d\n", *my_int);
+
+    arena_clear(&a);
+
+    return 0;
 }
