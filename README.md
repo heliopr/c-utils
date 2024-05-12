@@ -12,3 +12,6 @@
 ## Math
 - [ ] vector
 - [ ] matrix
+
+## Utility
+- [ ] Arena
