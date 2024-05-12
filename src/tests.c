@@ -73,51 +73,50 @@ int test_linkedlist() {
     printf("\n");
 }
 
+#define INITIAL_ARENA_SIZE 1
+
 struct arena {
-    void **allocations;
-    int num_allocations, allocated;
+    void *ptr;
+    size_t offset, allocated;
 };
 
-void arena_init(struct arena *a) {
-    a->num_allocations = 0;
-    a->allocated = 1;
-    a->allocations = malloc(1 * sizeof(void*));
+struct arena arena_new() {
+    struct arena a = {malloc(sizeof(void*)*INITIAL_ARENA_SIZE), 0, INITIAL_ARENA_SIZE};
+    return a;
 }
 
+// 0 1 2 3 4 5
 void *arena_alloc(struct arena *a, size_t size) {
-    void *mem = malloc(size);
-
-    if (a->num_allocations == a->allocated) {
-        a->allocated *= 2;
-        a->allocations = realloc(a->allocations, a->allocated * sizeof(void*));
+    if (a->allocated - a->offset < size) {
+        while (a->allocated - a->offset < size) {
+            a->allocated *= 2;
+        }
+        
+        a->ptr = realloc(a->ptr, sizeof(void*)*a->allocated);
     }
 
-    a->allocations[a->num_allocations] = mem;
-    a->num_allocations++;
-    return mem;
+    void *mem_ptr = a->ptr+a->offset;
+    a->offset += size;
+    return mem_ptr;
 }
 
-void arena_clear(struct arena *a) {
-    for (int i = 0; i < a->num_allocations; i++) {
-        free(a->allocations[i]);
-    }
-
-    free(a->allocations);
+void arena_free(struct arena *a) {
+    free(a->ptr);
 }
 
 int main() {
     //test_sorting();
     //test_linkedlist();
 
-    struct arena a;
-    arena_init(&a);
+    struct arena a = arena_new();
 
-    int *my_int = arena_alloc(&a, sizeof(int));
+    int *my_int = arena_alloc(&a, sizeof(int)*500);
     *my_int = 11;
 
     printf("%d\n", *my_int);
+    printf("%lu %lu\n", a.offset, a.allocated);
 
-    arena_clear(&a);
+    arena_free(&a);
 
     return 0;
 }
