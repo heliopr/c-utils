@@ -1,17 +1,17 @@
 # c codebase
 
-## DS
-- [x] list
+## data structures
+- [ ] list
 - [ ] linked list
-- [ ] queue
-- [ ] stack
-- [ ] hashmap
-- [ ] set
-- [ ] binary tree
+    - queue
+    - stack
+- [ ] hash map
 
-## Math
+## math
 - [ ] vector
 - [ ] matrix
+- [ ] tensor
 
-## Utility
+# util
+- [ ] dynamic string
 - [ ] arena

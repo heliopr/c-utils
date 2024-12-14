@@ -1,5 +1,6 @@
-build:
-	gcc ./src/*.c ./src/ds/*.c -o out
+test:
+	gcc ./tests/*.c -o testsout
+	./testsout
 
 run:
 	./out
