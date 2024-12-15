@@ -9,18 +9,16 @@
 
 #define LIST_IMPL(type) \
     List List_new_##type() {\
-        List l = {0};\
-        List_init(sizeof(type), &l);\
-        return l;\
+        return List_new(sizeof(type));\
     }\
     \
-    type List_get_##type(size_t index, List *list) {\
+    type List_get_##type(size_t index, List list) {\
         if (list == NULL) return -1;\
         if (index >= list->size) return -1;\
         return ((type*)list->p)[index];\
     }\
     \
-    void List_append_##type(type value, List *list) {\
+    void List_append_##type(type value, List list) {\
         if (list == NULL) return;\
         _List_incrementSize(list);\
         ((type*)list->p)[list->size-1] = value;\
@@ -38,36 +36,45 @@ typedef struct List {
     size_t allocated;
     size_t elementSize;
     uint8_t *p;
-} List;
+} *List;
 
 
-static void _List_doubleSize(List *list);
-static void _List_incrementSize(List *list);
+static void _List_doubleSize(List list);
+static void _List_incrementSize(List list);
 
 
-void List_init(size_t elementSize, List *list);
-void List_free(List *list);
-void List_append(const void *value, List *list);
-void *List_get(size_t index, List *list);
+List List_new(size_t elementSize);
+void List_free(List list);
+void List_append(const void *value, List list);
+void *List_get(size_t index, List list);
 
 
-void List_init(size_t elementSize, List *list) {
+List List_new(size_t elementSize) {
     void *p = malloc(elementSize * 1);
-    if (p == NULL) return;
+    if (p == NULL) return NULL;
 
+    List list = malloc(sizeof(struct List));
+    if (list == NULL) {
+        free(p);
+        return NULL;
+    }
+
+    list->size = 0;
     list->elementSize = elementSize;
     list->allocated = 1;
     list->p = p;
+    return list;
 }
 
-void List_free(List *list) {
+void List_free(List list) {
     if (list == NULL) return;
 
     free(list->p);
     list->p = NULL;
+    free(list);
 }
 
-void List_append(const void *value, List *list) {
+void List_append(const void *value, List list) {
     if (value == NULL) return;
     if (list == NULL) return;
 
@@ -75,7 +82,7 @@ void List_append(const void *value, List *list) {
     memcpy(list->p, value, list->elementSize);
 }
 
-void *List_get(size_t index, List *list) {
+void *List_get(size_t index, List list) {
     if (list == NULL) return NULL;
     if (list->p == NULL) return NULL;
     if (index >= list->size) return NULL;
@@ -83,7 +90,7 @@ void *List_get(size_t index, List *list) {
 }
 
 
-static void _List_doubleSize(List *list) {
+static void _List_doubleSize(List list) {
     size_t newSize = list->allocated * 2;
     void *p = realloc(list->p, newSize * list->elementSize);
     if (p == NULL) return;
@@ -92,7 +99,7 @@ static void _List_doubleSize(List *list) {
     list->p = p;
 }
 
-static void _List_incrementSize(List *list) {
+static void _List_incrementSize(List list) {
     if (list->size >= list->allocated) {
         _List_doubleSize(list);
     }
