@@ -26,6 +26,13 @@
         ((type*)list->p)[list->size-1] = value;\
     }
 
+typedef unsigned char uchar;
+typedef unsigned short ushort;
+typedef unsigned int uint;
+typedef unsigned long ulong;
+typedef unsigned long long ulonglong;
+typedef long long longlong;
+
 typedef struct List {
     size_t size;
     size_t allocated;
@@ -41,8 +48,6 @@ static void _List_incrementSize(List *list);
 void List_init(size_t elementSize, List *list);
 void List_free(List *list);
 void List_append(const void *value, List *list);
-void List_prepend(const void *value, List *list);
-void List_set(size_t index, const void *value, List *list);
 void *List_get(size_t index, List *list);
 
 
@@ -95,6 +100,20 @@ static void _List_incrementSize(List *list) {
 }
 
 
+// number implementations
+LIST_IMPL(char)
+LIST_IMPL(short)
 LIST_IMPL(int)
+LIST_IMPL(float)
+LIST_IMPL(double)
+LIST_IMPL(long)
+LIST_IMPL(longlong)
+
+// unsigned implementations
+LIST_IMPL(uchar)
+LIST_IMPL(ushort)
+LIST_IMPL(uint)
+LIST_IMPL(ulong)
+LIST_IMPL(ulonglong)
 
 #endif
