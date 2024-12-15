@@ -13,5 +13,6 @@
 - [ ] tensor
 
 # util
+- [ ] basic testing
 - [ ] dynamic string
 - [ ] arena
