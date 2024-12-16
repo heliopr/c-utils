@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <assert.h>
+#include <math.h>
 #include "../src/ds/list.h"
 
 void testList() {
@@ -13,7 +14,7 @@ void testList() {
         int x = 10;
         List_append(&x, list);
         assert(list->size == 1);
-        assert(list->allocated == 2);
+        assert(list->allocated == 1);
         assert(*((int*)List_get(0, list)) == x);
         assert(LIST_GET(int, 0, list) == x);
 
@@ -55,7 +56,7 @@ void testList() {
         List_appendPtr(&x, list);
         List_appendPtr(&y, list);
         assert(list->size == 2);
-        assert(list->allocated == 4);
+        assert(list->allocated == 2);
 
         assert(*((void**)List_get(0, list)) == &x);
         assert(*((void**)List_get(1, list)) == &y);
@@ -65,5 +66,46 @@ void testList() {
         assert(LIST_GET(teste_t*, 1, list) == &y);
 
         List_free(list);
+    }
+
+    printf("Test 4\n");
+    {
+        List_int list = List_new_int();
+
+        int num = 1024;
+        int arr[num];
+        arr[0] = 0;
+        List_append_int(0, list);
+        for (int i = 1; i < num; i++) {
+            int val = i+arr[i-1];;
+            arr[i] = val;
+            List_append_int(val, list);
+        }
+
+        assert(list->size == num);
+        assert(list->allocated == pow(2, ceil(log2(num))));
+
+        for (int i = 0; i < num; i++) {
+            assert(List_get_int(i, list) == arr[i]);
+        }
+        
+
+        List_free(list);
+    }
+
+    printf("Test 5\n");
+    {
+        List_int list = List_new_int();
+
+        List_insert_int(5, 0, list);
+        assert(list->size == 1);
+        assert(list->allocated == 1);
+        assert(List_get_int(0, list) == 5);
+
+        List_insert_int(4, 0, list);
+        assert(list->size == 2);
+        assert(list->allocated == 2);
+        assert(List_get_int(0, list) == 4);
+        assert(List_get_int(1, list) == 5);
     }
 }

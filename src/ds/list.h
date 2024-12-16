@@ -24,6 +24,23 @@
         if (list == NULL) return;\
         _List_incrementSize(list);\
         ((type*)list->p)[list->size-1] = value;\
+    }\
+    \
+    void List_insert_##type(type value, size_t index, List_##type list) {\
+        if (list == NULL) return;\
+        if (index > list->size) return;\
+        size_t size = list->size;\
+        _List_incrementSize(list);\
+        type *p = (type*)list->p;\
+        if (size > 0) {\
+            size_t i = size-1;\
+            while (1) {\
+                p[i+1] = p[i];\
+                if (i == index) break;\
+                i--;\
+            }\
+        }\
+        p[index] = value;\
     }
 
 #define LIST_GET(type, index, list) (*((type*)List_get(index, list)))
@@ -109,10 +126,10 @@ static void _List_doubleSize(List list) {
 }
 
 static void _List_incrementSize(List list) {
-    list->size++;
     if (list->size >= list->allocated) {
         _List_doubleSize(list);
     }
+    list->size++;
 }
 
 
