@@ -8,17 +8,19 @@
 #define DS_LIST_H
 
 #define LIST_IMPL(type) \
-    List List_new_##type() {\
+    typedef List List_##type;\
+    \
+    List_##type List_new_##type() {\
         return List_new(sizeof(type));\
     }\
     \
-    type List_get_##type(size_t index, List list) {\
-        if (list == NULL) return -1;\
-        if (index >= list->size) return -1;\
+    type List_get_##type(size_t index, List_##type list) {\
+        if (list == NULL) return 0;\
+        if (index >= list->size) return 0;\
         return ((type*)list->p)[index];\
     }\
     \
-    void List_append_##type(type value, List list) {\
+    void List_append_##type(type value, List_##type list) {\
         if (list == NULL) return;\
         _List_incrementSize(list);\
         ((type*)list->p)[list->size-1] = value;\
@@ -35,7 +37,7 @@ typedef struct List {
     size_t size;
     size_t allocated;
     size_t elementSize;
-    uint8_t *p;
+    void *p;
 } *List;
 
 
@@ -46,6 +48,7 @@ static void _List_incrementSize(List list);
 List List_new(size_t elementSize);
 void List_free(List list);
 void List_append(const void *value, List list);
+void List_appendPtr(const void *ptr, List list);
 void *List_get(size_t index, List list);
 
 
@@ -79,7 +82,7 @@ void List_append(const void *value, List list) {
     if (list == NULL) return;
 
     _List_incrementSize(list);
-    memcpy(list->p, value, list->elementSize);
+    memcpy(list->p+((list->size-1)*list->elementSize), value, list->elementSize);
 }
 
 void *List_get(size_t index, List list) {
@@ -100,10 +103,10 @@ static void _List_doubleSize(List list) {
 }
 
 static void _List_incrementSize(List list) {
+    list->size++;
     if (list->size >= list->allocated) {
         _List_doubleSize(list);
     }
-    list->size++;
 }
 
 
@@ -122,5 +125,6 @@ LIST_IMPL(ushort)
 LIST_IMPL(uint)
 LIST_IMPL(ulong)
 LIST_IMPL(ulonglong)
+
 
 #endif
