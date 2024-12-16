@@ -26,6 +26,8 @@
         ((type*)list->p)[list->size-1] = value;\
     }
 
+#define LIST_GET(type, index, list) (*((type*)List_get(index, list)))
+
 typedef unsigned char uchar;
 typedef unsigned short ushort;
 typedef unsigned int uint;
@@ -83,6 +85,10 @@ void List_append(const void *value, List list) {
 
     _List_incrementSize(list);
     memcpy(list->p+((list->size-1)*list->elementSize), value, list->elementSize);
+}
+
+void List_appendPtr(const void *ptr, List list) {
+    List_append(&ptr, list);
 }
 
 void *List_get(size_t index, List list) {

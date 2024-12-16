@@ -15,6 +15,7 @@ void testList() {
         assert(list->size == 1);
         assert(list->allocated == 2);
         assert(*((int*)List_get(0, list)) == x);
+        assert(LIST_GET(int, 0, list) == x);
 
         List_free(list);
     }
@@ -50,14 +51,18 @@ void testList() {
         List list = List_new(sizeof(teste_t*));
         assert(list != NULL);
 
-        teste_t *x = malloc(sizeof(teste_t)), *y = malloc(sizeof(teste_t));
-        List_append(&x, list);
-        List_append(&y, list);
+        teste_t x = {5, 3}, y = {1, 1};
+        List_appendPtr(&x, list);
+        List_appendPtr(&y, list);
         assert(list->size == 2);
         assert(list->allocated == 4);
 
-        assert(*((void**)List_get(0, list)) == x);
-        assert(*((void**)List_get(1, list)) == y);
+        assert(*((void**)List_get(0, list)) == &x);
+        assert(*((void**)List_get(1, list)) == &y);
+        assert(LIST_GET(teste_t*, 0, list) == &x);
+
+        assert(LIST_GET(teste_t*, 0, list) == &x);
+        assert(LIST_GET(teste_t*, 1, list) == &y);
 
         List_free(list);
     }
