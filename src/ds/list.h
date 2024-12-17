@@ -78,6 +78,19 @@
             List_append_##T(mappedVal, newList);\
         }\
         return newList;\
+    }\
+    List_##T List_filter_##T(bool (*filter)(T), List_##T list) {\
+        if (list == NULL) return NULL;\
+        if (filter == NULL) return NULL;\
+        List_##T newList = List_new_##T();\
+        T *p = (T*)list->p;\
+        for (size_t i = 0; i < list->size; i++) {\
+            T val = p[i];\
+            if (filter(val)) {\
+                List_append_##T(val, newList);\
+            }\
+        }\
+        return newList;\
     }
 
 #define LIST_GET(T, index, list) (*((T*)List_get(index, list)))
@@ -163,7 +176,7 @@ void *List_get(size_t index, List list) {
     if (list == NULL) return NULL;
     if (list->p == NULL) return NULL;
     if (index >= list->size) return NULL;
-    return list->p + (index * list->elementSize);
+    return LIST_PTR_IND(index, list);
 }
 
 void List_insert( const void *value, size_t index, List list) {

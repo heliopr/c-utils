@@ -7,6 +7,10 @@ int mult(int x) {
     return x*2;
 }
 
+bool filterTest(int x) {
+    return x%2 == 0;
+}
+
 void testList() {
     printf("Test 1\n");
     {
@@ -139,8 +143,68 @@ void testList() {
         assert(List_get_int(0, list) == x);
 
         List_print_int("%d", list);
-        List_print_int("%d", List_map_int(mult, list));
 
         List_free(list);
+    }
+
+    printf("Test 6\n");
+    {
+        List_double list = List_new_double();
+
+        double x = 10870;
+        double y = 1;
+        int i = 0;
+        List_append_double(y, list);
+        i++;
+        while (fabs(x-(y*y)) > 0.0001) {
+            y = (y + (x/y))/2;
+            List_append_double(y, list);
+            i++;
+        }
+        assert(list->size == i);
+        assert(List_get_double(list->size-1, list) == y);
+
+        List_print_double("%f", list);
+
+        List_free(list);
+    }
+
+    printf("Test 7\n");
+    {
+        List_float list = List_new_float();
+
+        int n = 10;
+        for (int i = 0; i < n; i++) {
+            List_append_int(i, list);
+        }
+
+        List_int doubled = List_map_int(mult, list);
+        assert(doubled->size == list->size);
+
+        List_print_int("%d", doubled);
+
+        List_free(doubled);
+        List_free(list);
+    }
+
+    printf("Test 8\n");
+    {
+        List_int list = List_new_int();
+
+        int n = 18;
+        for (int i = 0; i < n; i++) {
+            List_append_int(i, list);
+        }
+
+        List_int filtered = List_filter_int(filterTest, list);
+
+        assert(list->size == n);
+        assert(filtered->size == n/2 + (n%2==0?0:1));
+
+        List_print_int("%d", list);
+        List_print_int("%d", filtered);
+
+        List_free(list);
+        List_free(filtered);
     }
 }
