@@ -114,7 +114,7 @@ void List_append(const void *value, List list) {
     if (list == NULL) return;
 
     _List_incrementSize(list);
-    memcpy(list->p+((list->size-1)*list->elementSize), value, list->elementSize);
+    memcpy(LIST_PTR_IND(list->size-1, list), value, list->elementSize);
 }
 
 void List_appendPtr(const void *ptr, List list) {
