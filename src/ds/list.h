@@ -7,31 +7,31 @@
 #ifndef DS_LIST_H
 #define DS_LIST_H
 
-#define LIST_IMPL(type) \
-    typedef List List_##type;\
+#define LIST_IMPL(T) \
+    typedef List List_##T;\
     \
-    List_##type List_new_##type() {\
-        return List_new(sizeof(type));\
+    List_##T List_new_##T() {\
+        return List_new(sizeof(T));\
     }\
     \
-    type List_get_##type(size_t index, List_##type list) {\
+    T List_get_##T(size_t index, List_##T list) {\
         if (list == NULL) return 0;\
         if (index >= list->size) return 0;\
-        return ((type*)list->p)[index];\
+        return ((T*)list->p)[index];\
     }\
     \
-    void List_append_##type(type value, List_##type list) {\
+    void List_append_##T(T value, List_##T list) {\
         if (list == NULL) return;\
         _List_incrementSize(list);\
-        ((type*)list->p)[list->size-1] = value;\
+        ((T*)list->p)[list->size-1] = value;\
     }\
     \
-    void List_insert_##type(type value, size_t index, List_##type list) {\
+    void List_insert_##T(T value, size_t index, List_##T list) {\
         if (list == NULL) return;\
         if (index > list->size) return;\
         size_t size = list->size;\
         _List_incrementSize(list);\
-        type *p = (type*)list->p;\
+        T *p = (T*)list->p;\
         if (size > 0) {\
             size_t i = size-1;\
             while (1) {\
@@ -41,9 +41,21 @@
             }\
         }\
         p[index] = value;\
+    }\
+    \
+    void List_print_##T(const char *format, List list) {\
+        if (list == NULL) return;\
+        printf("List{");\
+        T *p = (T*)list->p;\
+        for (size_t i = 0; i < list->size; i++) {\
+            printf(format, p[i]);\
+            if (i < list->size-1) printf(", ");\
+        }\
+        printf("}\n");\
     }
 
-#define LIST_GET(type, index, list) (*((type*)List_get(index, list)))
+#define LIST_GET(T, index, list) (*((T*)List_get(index, list)))
+#define LIST_PTR_IND(index, list) (list->p+((index)*list->elementSize))
 
 typedef unsigned char uchar;
 typedef unsigned short ushort;
@@ -69,6 +81,7 @@ void List_free(List list);
 void List_append(const void *value, List list);
 void List_appendPtr(const void *ptr, List list);
 void *List_get(size_t index, List list);
+void List_insert(const void *value, size_t index, List list);
 
 
 List List_new(size_t elementSize) {
@@ -113,6 +126,16 @@ void *List_get(size_t index, List list) {
     if (list->p == NULL) return NULL;
     if (index >= list->size) return NULL;
     return list->p + (index * list->elementSize);
+}
+
+void List_insert(const void *value, size_t index, List list) {
+    if (list == NULL) return;
+    if (index > list->size) return;
+
+    size_t size = list->size;
+    _List_incrementSize(list);
+    memcpy(LIST_PTR_IND(index+1, list), LIST_PTR_IND(index, list), (size-index)*list->elementSize);
+    memcpy(LIST_PTR_IND(index, list), value, list->elementSize);
 }
 
 

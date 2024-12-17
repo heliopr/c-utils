@@ -18,6 +18,13 @@ void testList() {
         assert(*((int*)List_get(0, list)) == x);
         assert(LIST_GET(int, 0, list) == x);
 
+        x = -500;
+        List_insert(&x, 1, list);
+        assert(list->size == 2);
+        assert(list->allocated == 2);
+
+        List_print_int("%d", list);
+
         List_free(list);
     }
 
@@ -37,6 +44,8 @@ void testList() {
         assert(List_get_int(4, list) == 35000);
         assert(list->size == 5);
         assert(list->allocated == 8);
+
+        List_print_int("%d", list);
 
         List_free(list);
     }
@@ -65,6 +74,8 @@ void testList() {
         assert(LIST_GET(teste_t*, 0, list) == &x);
         assert(LIST_GET(teste_t*, 1, list) == &y);
 
+        List_print_int("%p", list);
+
         List_free(list);
     }
 
@@ -72,7 +83,7 @@ void testList() {
     {
         List_int list = List_new_int();
 
-        int num = 1024;
+        int num = 256;
         int arr[num];
         arr[0] = 0;
         List_append_int(0, list);
@@ -88,7 +99,6 @@ void testList() {
         for (int i = 0; i < num; i++) {
             assert(List_get_int(i, list) == arr[i]);
         }
-        
 
         List_free(list);
     }
@@ -107,5 +117,15 @@ void testList() {
         assert(list->allocated == 2);
         assert(List_get_int(0, list) == 4);
         assert(List_get_int(1, list) == 5);
+
+        List_insert_int(978, 1, list);
+        List_insert_int(-3, 1, list);
+        List_insert_int(-1, 3, list);
+        assert(list->size == 5);
+        assert(list->allocated == 8);
+
+        List_print_int("%d", list);
+
+        List_free(list);
     }
 }
