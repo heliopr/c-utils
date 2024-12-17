@@ -26,6 +26,20 @@
         ((T*)list->p)[list->size-1] = value;\
     }\
     \
+    void List_prepend_##T(T value, List_##T list) {\
+        if (list == NULL) return;\
+        T *p = (T*)list->p;\
+        _List_incrementSize(list);\
+        if (list->size > 1) {\
+            size_t i = list->size-1;\
+            while (1) {\
+                p[i+1] = p[i];\
+                if (i == 0) break;\
+                i--;\
+            }\
+        }\
+        p[0] = value;\
+    }\
     void List_insert_##T(T value, size_t index, List_##T list) {\
         if (list == NULL) return;\
         if (index > list->size) return;\
@@ -43,7 +57,7 @@
         p[index] = value;\
     }\
     \
-    void List_print_##T(const char *format, List list) {\
+    void List_print_##T(const char *format, List_##T list) {\
         if (list == NULL) return;\
         printf("List{");\
         T *p = (T*)list->p;\
@@ -52,6 +66,18 @@
             if (i < list->size-1) printf(", ");\
         }\
         printf("}\n");\
+    }\
+    \
+    List_##T List_map_##T(T (*mapFun)(T), List_##T list) {\
+        if (list == NULL) return NULL;\
+        if (mapFun == NULL) return NULL;\
+        List_##T newList = List_new_##T();\
+        T *p = (T*)list->p;\
+        for (size_t i = 0; i < list->size; i++) {\
+            T mappedVal = (*mapFun)(p[i]);\
+            List_append_##T(mappedVal, newList);\
+        }\
+        return newList;\
     }
 
 #define LIST_GET(T, index, list) (*((T*)List_get(index, list)))
@@ -80,6 +106,7 @@ List List_new(size_t elementSize);
 void List_free(List list);
 void List_append(const void *value, List list);
 void List_appendPtr(const void *ptr, List list);
+void List_prepend(const void *value, List list);
 void *List_get(size_t index, List list);
 void List_insert(const void *value, size_t index, List list);
 
@@ -121,6 +148,17 @@ void List_appendPtr(const void *ptr, List list) {
     List_append(&ptr, list);
 }
 
+void List_prepend(const void *value, List list) {
+    if (value == NULL) return;
+    if (list == NULL) return;
+
+    List_insert(value, 0, list);
+}
+
+void List_prependPtr(const void *ptr, List list) {
+    List_prepend(&ptr, list);
+}
+
 void *List_get(size_t index, List list) {
     if (list == NULL) return NULL;
     if (list->p == NULL) return NULL;
@@ -128,7 +166,7 @@ void *List_get(size_t index, List list) {
     return list->p + (index * list->elementSize);
 }
 
-void List_insert(const void *value, size_t index, List list) {
+void List_insert( const void *value, size_t index, List list) {
     if (list == NULL) return;
     if (index > list->size) return;
 

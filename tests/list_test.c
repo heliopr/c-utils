@@ -3,6 +3,10 @@
 #include <math.h>
 #include "../src/ds/list.h"
 
+int mult(int x) {
+    return x*2;
+}
+
 void testList() {
     printf("Test 1\n");
     {
@@ -12,7 +16,7 @@ void testList() {
         assert(list->elementSize == sizeof(int));
 
         int x = 10;
-        List_append(&x, list);
+        List_prepend(&x, list);
         assert(list->size == 1);
         assert(list->allocated == 1);
         assert(*((int*)List_get(0, list)) == x);
@@ -22,6 +26,12 @@ void testList() {
         List_insert(&x, 1, list);
         assert(list->size == 2);
         assert(list->allocated == 2);
+
+        x = 100;
+        List_prepend(&x, list);
+        assert(list->size == 3);
+        assert(list->allocated == 4);
+        assert(*((int*)List_get(0, list)) == x);
 
         List_print_int("%d", list);
 
@@ -63,18 +73,16 @@ void testList() {
 
         teste_t x = {5, 3}, y = {1, 1};
         List_appendPtr(&x, list);
-        List_appendPtr(&y, list);
+        List_prependPtr(&y, list);
         assert(list->size == 2);
         assert(list->allocated == 2);
 
-        assert(*((void**)List_get(0, list)) == &x);
-        assert(*((void**)List_get(1, list)) == &y);
-        assert(LIST_GET(teste_t*, 0, list) == &x);
+        assert(*((void**)List_get(1, list)) == &x);
+        assert(*((void**)List_get(0, list)) == &y);
+        assert(LIST_GET(teste_t*, 1, list) == &x);
+        assert(LIST_GET(teste_t*, 0, list) == &y);
 
-        assert(LIST_GET(teste_t*, 0, list) == &x);
-        assert(LIST_GET(teste_t*, 1, list) == &y);
-
-        List_print_int("%p", list);
+        List_print_long("%p", list);
 
         List_free(list);
     }
@@ -124,7 +132,14 @@ void testList() {
         assert(list->size == 5);
         assert(list->allocated == 8);
 
+        int x = 100;
+        List_prepend_int(x, list);
+        assert(list->size == 6);
+        assert(list->allocated == 8);
+        assert(List_get_int(0, list) == x);
+
         List_print_int("%d", list);
+        List_print_int("%d", List_map_int(mult, list));
 
         List_free(list);
     }
