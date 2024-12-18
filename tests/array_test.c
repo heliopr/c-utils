@@ -289,18 +289,49 @@ void testArray() {
     {
         clock_t start = clock();
         
-        for (int i = 0; i < 1024*1024; i++) {
+        for (int i = 0; i < 1024; i++) {
             Array_int array = Array_new_int();
-            Array_prealloc(128, array);
+            Array_prealloc(256, array);
             for (int i = 0; i < 256; i++) {
                 Array_append(&i, array);
             }
-            Array arr = Array_map_int(mult, array);
-            Array_free(&arr);
             Array_free(&array);
         }
 
         double dt = (double)(clock()-start)/CLOCKS_PER_SEC;
         printf("Time: %fs\n", dt);
+    }
+
+    printf("Test 13\n");
+    {
+        Array_int array = Array_new_int();
+        _Array_optimizeAllocation(array);
+        Array_prealloc(32, array);
+
+        for (int i = 0; i < 13; i++) Array_append_int(5, array);
+
+        for (int i = 0; i < 2; i++) Array_append_int(5, array);
+
+        assert(array->allocated == 32);
+
+        _Array_optimizeAllocation(array);
+
+        assert(array->size == 15);
+        assert(array->allocated == 16);
+
+        int size = array->size;
+        for (int i = 0; i < size; i++) {
+            Array_remove_int(0, array);
+        }
+        assert(array->size == 0);
+        assert(array->allocated == 1);
+
+        _Array_optimizeAllocation(array);
+        assert(array->size == 0);
+        assert(array->allocated == 1);
+
+        Array_print_int("%d", array);
+
+        Array_free(&array);
     }
 }

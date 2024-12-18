@@ -121,8 +121,8 @@ typedef struct Array {
 } *Array;
 
 
-static void _Array_realloc(size_t newSize, Array array);
-static void _Array_doubleSize(Array arra);
+static void _Array_realloc(size_t newAllocation, Array array);
+static void _Array_doubleSize(Array array);
 static void _Array_halfSize(Array array);
 static void _Array_incrementSize(Array array);
 static void _Array_decreaseSize(Array array);
@@ -227,11 +227,12 @@ void Array_insert( const void *value, size_t index, Array array) {
 }
 
 
-static void _Array_realloc(size_t newSize, Array array) {
-    void *p = realloc(array->p, newSize * array->elementSize);
+static void _Array_realloc(size_t newAllocation, Array array) {
+    if (newAllocation == 0) newAllocation = 1;
+    void *p = realloc(array->p, newAllocation * array->elementSize);
     if (p == NULL) return;
 
-    array->allocated = newSize;
+    array->allocated = newAllocation;
     array->p = p;
 }
 
@@ -255,6 +256,21 @@ static void _Array_decreaseSize(Array array) {
         _Array_halfSize(array);
     }
     array->size--;
+}
+
+void _Array_optimizeAllocation(Array array) {
+    if (array->size > array->allocated/2) return;
+
+    size_t size = array->size;
+    size_t allocated = array->allocated;
+    while (1) {
+        size_t new = allocated / 2;
+        if (new > size && new > 0) allocated = new;
+        else break;
+    }
+
+    if (allocated == 0) allocated = 1;
+    _Array_realloc(allocated, array);
 }
 
 
