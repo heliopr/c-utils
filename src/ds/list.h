@@ -91,6 +91,15 @@
             }\
         }\
         return newList;\
+    }\
+    void List_remove_##T(size_t index, List_##T list) {\
+        if (list == NULL) return;\
+        if (index >= list->size) return;\
+        T *p = (T*)list->p;\
+        for (size_t i = index; i < list->size-1; i++) {\
+            p[i] = p[i+1];\
+        }\
+        _List_decreaseSize(list);\
     }
 
 #define LIST_GET(T, index, list) (*((T*)List_get(index, list)))
@@ -112,7 +121,9 @@ typedef struct List {
 
 
 static void _List_doubleSize(List list);
+static void _List_halfSize(List list);
 static void _List_incrementSize(List list);
+static void _List_decreaseSize(List list);
 
 
 List List_new(size_t elementSize);
@@ -190,8 +201,7 @@ void List_insert( const void *value, size_t index, List list) {
 }
 
 
-static void _List_doubleSize(List list) {
-    size_t newSize = list->allocated * 2;
+static void _List_realloc(size_t newSize, List list) {
     void *p = realloc(list->p, newSize * list->elementSize);
     if (p == NULL) return;
 
@@ -199,11 +209,26 @@ static void _List_doubleSize(List list) {
     list->p = p;
 }
 
+static void _List_doubleSize(List list) {
+    _List_realloc(list->allocated*2, list);
+}
+
+static void _List_halfSize(List list) {
+    _List_realloc(list->allocated/2, list);
+}
+
 static void _List_incrementSize(List list) {
     if (list->size >= list->allocated) {
         _List_doubleSize(list);
     }
     list->size++;
+}
+
+static void _List_decreaseSize(List list) {
+    if (list->size-1 == list->allocated/2) {
+        _List_halfSize(list);
+    }
+    list->size--;
 }
 
 

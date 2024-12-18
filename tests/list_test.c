@@ -207,4 +207,22 @@ void testList() {
         List_free(list);
         List_free(filtered);
     }
+
+    printf("Test 9\n");
+    {
+        List_int list = List_new_int();
+
+        for (int i = 0; i < 9; i++) {
+            List_append_int(i, list);
+        }
+        assert(list->allocated == 16);
+
+        List_remove_int(0, list);
+        assert(list->size == 8);
+        assert(list->allocated == 8);
+
+        List_print_int("%d", list);
+
+        List_free(list);
+    }
 }
