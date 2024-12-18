@@ -14,54 +14,54 @@ bool filterTest(int x) {
 void testArray() {
     printf("Test 1\n");
     {
-        Array list = Array_new(sizeof(int));
-        assert(list != NULL);
-        assert(list->p != NULL);
-        assert(list->elementSize == sizeof(int));
+        Array array = Array_new(sizeof(int));
+        assert(array != NULL);
+        assert(array->p != NULL);
+        assert(array->elementSize == sizeof(int));
 
         int x = 10;
-        Array_prepend(&x, list);
-        assert(list->size == 1);
-        assert(list->allocated == 1);
-        assert(*((int*)Array_get(0, list)) == x);
-        assert(ARRAY_GET(int, 0, list) == x);
+        Array_prepend(&x, array);
+        assert(array->size == 1);
+        assert(array->allocated == 1);
+        assert(*((int*)Array_get(0, array)) == x);
+        assert(ARRAY_GET(int, 0, array) == x);
 
         x = -500;
-        Array_insert(&x, 1, list);
-        assert(list->size == 2);
-        assert(list->allocated == 2);
+        Array_insert(&x, 1, array);
+        assert(array->size == 2);
+        assert(array->allocated == 2);
 
         x = 100;
-        Array_prepend(&x, list);
-        assert(list->size == 3);
-        assert(list->allocated == 4);
-        assert(*((int*)Array_get(0, list)) == x);
+        Array_prepend(&x, array);
+        assert(array->size == 3);
+        assert(array->allocated == 4);
+        assert(*((int*)Array_get(0, array)) == x);
 
-        Array_print_int("%d", list);
+        Array_print_int("%d", array);
 
-        Array_free(list);
+        Array_free(array);
     }
 
     printf("Test 2\n");
     {
-        Array_int list = Array_new_int();
-        Array_append_int(10, list);
-        Array_append_int(-5, list);
-        Array_append_int(8, list);
-        Array_append_int(3, list);
-        Array_append_int(35000, list);
+        Array_int array = Array_new_int();
+        Array_append_int(10, array);
+        Array_append_int(-5, array);
+        Array_append_int(8, array);
+        Array_append_int(3, array);
+        Array_append_int(35000, array);
 
-        assert(Array_get_int(0, list) == 10);
-        assert(Array_get_int(1, list) == -5);
-        assert(Array_get_int(2, list) == 8);
-        assert(Array_get_int(3, list) == 3);
-        assert(Array_get_int(4, list) == 35000);
-        assert(list->size == 5);
-        assert(list->allocated == 8);
+        assert(Array_get_int(0, array) == 10);
+        assert(Array_get_int(1, array) == -5);
+        assert(Array_get_int(2, array) == 8);
+        assert(Array_get_int(3, array) == 3);
+        assert(Array_get_int(4, array) == 35000);
+        assert(array->size == 5);
+        assert(array->allocated == 8);
 
-        Array_print_int("%d", list);
+        Array_print_int("%d", array);
 
-        Array_free(list);
+        Array_free(array);
     }
 
     printf("Test 3\n");
@@ -72,157 +72,157 @@ void testArray() {
             int b;
         } teste_t;
         
-        Array list = Array_new(sizeof(teste_t*));
-        assert(list != NULL);
+        Array array = Array_new(sizeof(teste_t*));
+        assert(array != NULL);
 
         teste_t x = {5, 3}, y = {1, 1};
-        Array_appendPtr(&x, list);
-        Array_prependPtr(&y, list);
-        assert(list->size == 2);
-        assert(list->allocated == 2);
+        Array_appendPtr(&x, array);
+        Array_prependPtr(&y, array);
+        assert(array->size == 2);
+        assert(array->allocated == 2);
 
-        assert(*((void**)Array_get(1, list)) == &x);
-        assert(*((void**)Array_get(0, list)) == &y);
-        assert(ARRAY_GET(teste_t*, 1, list) == &x);
-        assert(ARRAY_GET(teste_t*, 0, list) == &y);
+        assert(*((void**)Array_get(1, array)) == &x);
+        assert(*((void**)Array_get(0, array)) == &y);
+        assert(ARRAY_GET(teste_t*, 1, array) == &x);
+        assert(ARRAY_GET(teste_t*, 0, array) == &y);
 
-        Array_print_long("%p", list);
+        Array_print_long("%p", array);
 
-        Array_free(list);
+        Array_free(array);
     }
 
     printf("Test 4\n");
     {
-        Array_int list = Array_new_int();
+        Array_int array = Array_new_int();
 
         int num = 256;
         int arr[num];
         arr[0] = 0;
-        Array_append_int(0, list);
+        Array_append_int(0, array);
         for (int i = 1; i < num; i++) {
             int val = i+arr[i-1];;
             arr[i] = val;
-            Array_append_int(val, list);
+            Array_append_int(val, array);
         }
 
-        assert(list->size == num);
-        assert(list->allocated == pow(2, ceil(log2(num))));
+        assert(array->size == num);
+        assert(array->allocated == pow(2, ceil(log2(num))));
 
         for (int i = 0; i < num; i++) {
-            assert(Array_get_int(i, list) == arr[i]);
+            assert(Array_get_int(i, array) == arr[i]);
         }
 
-        Array_free(list);
+        Array_free(array);
     }
 
     printf("Test 5\n");
     {
-        Array_int list = Array_new_int();
+        Array_int array = Array_new_int();
 
-        Array_insert_int(5, 0, list);
-        assert(list->size == 1);
-        assert(list->allocated == 1);
-        assert(Array_get_int(0, list) == 5);
+        Array_insert_int(5, 0, array);
+        assert(array->size == 1);
+        assert(array->allocated == 1);
+        assert(Array_get_int(0, array) == 5);
 
-        Array_insert_int(4, 0, list);
-        assert(list->size == 2);
-        assert(list->allocated == 2);
-        assert(Array_get_int(0, list) == 4);
-        assert(Array_get_int(1, list) == 5);
+        Array_insert_int(4, 0, array);
+        assert(array->size == 2);
+        assert(array->allocated == 2);
+        assert(Array_get_int(0, array) == 4);
+        assert(Array_get_int(1, array) == 5);
 
-        Array_insert_int(978, 1, list);
-        Array_insert_int(-3, 1, list);
-        Array_insert_int(-1, 3, list);
-        assert(list->size == 5);
-        assert(list->allocated == 8);
+        Array_insert_int(978, 1, array);
+        Array_insert_int(-3, 1, array);
+        Array_insert_int(-1, 3, array);
+        assert(array->size == 5);
+        assert(array->allocated == 8);
 
         int x = 100;
-        Array_prepend_int(x, list);
-        assert(list->size == 6);
-        assert(list->allocated == 8);
-        assert(Array_get_int(0, list) == x);
+        Array_prepend_int(x, array);
+        assert(array->size == 6);
+        assert(array->allocated == 8);
+        assert(Array_get_int(0, array) == x);
 
-        Array_print_int("%d", list);
+        Array_print_int("%d", array);
 
-        Array_free(list);
+        Array_free(array);
     }
 
     printf("Test 6\n");
     {
-        Array_double list = Array_new_double();
+        Array_double array = Array_new_double();
 
         double x = 10870;
         double y = 1;
         int i = 0;
-        Array_append_double(y, list);
+        Array_append_double(y, array);
         i++;
         while (fabs(x-(y*y)) > 0.0001) {
             y = (y + (x/y))/2;
-            Array_append_double(y, list);
+            Array_append_double(y, array);
             i++;
         }
-        assert(list->size == i);
-        assert(Array_get_double(list->size-1, list) == y);
+        assert(array->size == i);
+        assert(Array_get_double(array->size-1, array) == y);
 
-        Array_print_double("%f", list);
+        Array_print_double("%f", array);
 
-        Array_free(list);
+        Array_free(array);
     }
 
     printf("Test 7\n");
     {
-        Array_float list = Array_new_float();
+        Array_float array = Array_new_float();
 
         int n = 10;
         for (int i = 0; i < n; i++) {
-            Array_append_int(i, list);
+            Array_append_int(i, array);
         }
 
-        Array_int doubled = Array_map_int(mult, list);
-        assert(doubled->size == list->size);
+        Array_int doubled = Array_map_int(mult, array);
+        assert(doubled->size == array->size);
 
         Array_print_int("%d", doubled);
 
         Array_free(doubled);
-        Array_free(list);
+        Array_free(array);
     }
 
     printf("Test 8\n");
     {
-        Array_int list = Array_new_int();
+        Array_int array = Array_new_int();
 
         int n = 18;
         for (int i = 0; i < n; i++) {
-            Array_append_int(i, list);
+            Array_append_int(i, array);
         }
 
-        Array_int filtered = Array_filter_int(filterTest, list);
+        Array_int filtered = Array_filter_int(filterTest, array);
 
-        assert(list->size == n);
+        assert(array->size == n);
         assert(filtered->size == n/2 + (n%2==0?0:1));
 
-        Array_print_int("%d", list);
+        Array_print_int("%d", array);
         Array_print_int("%d", filtered);
 
-        Array_free(list);
+        Array_free(array);
         Array_free(filtered);
     }
 
     printf("Test 9\n");
     {
-        Array_int list = Array_new_int();
+        Array_int array = Array_new_int();
 
         for (int i = 0; i < 9; i++) {
-            Array_append_int(i, list);
+            Array_append_int(i, array);
         }
-        assert(list->allocated == 16);
+        assert(array->allocated == 16);
 
-        Array_remove_int(0, list);
-        assert(list->size == 8);
-        assert(list->allocated == 8);
+        Array_remove_int(0, array);
+        assert(array->size == 8);
+        assert(array->allocated == 8);
 
-        Array_print_int("%d", list);
+        Array_print_int("%d", array);
 
-        Array_free(list);
+        Array_free(array);
     }
 }
