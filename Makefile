@@ -1,5 +1,5 @@
 test:
-	gcc ./tests/*.c -lm -o testsout
+	gcc ./tests/*.c -lm -O0 -o testsout
 	./testsout
 
 run:

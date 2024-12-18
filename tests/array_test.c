@@ -284,4 +284,23 @@ void testArray() {
         assert(array == NULL);
         assert(clone == NULL);
     }
+
+    printf("Test 12\n");
+    {
+        clock_t start = clock();
+        
+        for (int i = 0; i < 1024*1024; i++) {
+            Array_int array = Array_new_int();
+            Array_prealloc(128, array);
+            for (int i = 0; i < 256; i++) {
+                Array_append(&i, array);
+            }
+            Array arr = Array_map_int(mult, array);
+            Array_free(&arr);
+            Array_free(&array);
+        }
+
+        double dt = (double)(clock()-start)/CLOCKS_PER_SEC;
+        printf("Time: %fs\n", dt);
+    }
 }

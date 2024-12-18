@@ -72,6 +72,7 @@
         if (array == NULL) return NULL;\
         if (mapFun == NULL) return NULL;\
         Array_##T newArray = Array_new_##T();\
+        Array_prealloc(array->allocated, newArray);\
         T *p = (T*)array->p;\
         for (size_t i = 0; i < array->size; i++) {\
             T mappedVal = (*mapFun)(p[i]);\
