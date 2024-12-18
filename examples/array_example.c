@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include "../src/ds/list.h"
+#include "../src/ds/array.h"
 
 int main() {
-    List_int list = List_new_int();
+    Array_int array = Array_new_int();
     int n;
 
     printf("Enter a number n:\n");
@@ -12,8 +12,8 @@ int main() {
     for (int i = 0; i < n; i++) {
         int x;
         scanf("%d", &x);
-        List_append_int(x, list);
+        Array_append_int(x, array);
     }
 
-    List_print_int("%d", list);
+    Array_print_int("%d", array);
 }

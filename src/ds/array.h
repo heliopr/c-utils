@@ -120,6 +120,7 @@ typedef struct Array {
 } *Array;
 
 
+static void _Array_realloc(size_t newSize, Array array);
 static void _Array_doubleSize(Array arra);
 static void _Array_halfSize(Array array);
 static void _Array_incrementSize(Array array);
@@ -127,7 +128,7 @@ static void _Array_decreaseSize(Array array);
 
 
 Array Array_new(size_t elementSize);
-void Array_free(Array array);
+void Array_free(Array *array);
 void Array_append(const void *value, Array array);
 void Array_appendPtr(const void *ptr, Array array);
 void Array_prepend(const void *value, Array array);
@@ -152,12 +153,23 @@ Array Array_new(size_t elementSize) {
     return array;
 }
 
-void Array_free(Array array) {
+void Array_free(Array *arrayP) {
+    if (arrayP == NULL) return;
+    Array array = *arrayP;
     if (array == NULL) return;
+
 
     free(array->p);
     array->p = NULL;
     free(array);
+    *arrayP = NULL;
+}
+
+void Array_prealloc(size_t elements, Array array) {
+    if (array == NULL) return;
+    if (elements == 0) return;
+    if (array->size > 0 || array->allocated > 1) return;
+    _Array_realloc(elements, array);
 }
 
 void Array_append(const void *value, Array array) {

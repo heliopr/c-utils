@@ -39,7 +39,8 @@ void testArray() {
 
         Array_print_int("%d", array);
 
-        Array_free(array);
+        Array_free(&array);
+        assert(array == NULL);
     }
 
     printf("Test 2\n");
@@ -61,7 +62,8 @@ void testArray() {
 
         Array_print_int("%d", array);
 
-        Array_free(array);
+        Array_free(&array);
+        assert(array == NULL);
     }
 
     printf("Test 3\n");
@@ -88,7 +90,8 @@ void testArray() {
 
         Array_print_long("%p", array);
 
-        Array_free(array);
+        Array_free(&array);
+        assert(array == NULL);
     }
 
     printf("Test 4\n");
@@ -112,7 +115,8 @@ void testArray() {
             assert(Array_get_int(i, array) == arr[i]);
         }
 
-        Array_free(array);
+        Array_free(&array);
+        assert(array == NULL);
     }
 
     printf("Test 5\n");
@@ -144,7 +148,8 @@ void testArray() {
 
         Array_print_int("%d", array);
 
-        Array_free(array);
+        Array_free(&array);
+        assert(array == NULL);
     }
 
     printf("Test 6\n");
@@ -166,7 +171,8 @@ void testArray() {
 
         Array_print_double("%f", array);
 
-        Array_free(array);
+        Array_free(&array);
+        assert(array == NULL);
     }
 
     printf("Test 7\n");
@@ -183,8 +189,10 @@ void testArray() {
 
         Array_print_int("%d", doubled);
 
-        Array_free(doubled);
-        Array_free(array);
+        Array_free(&doubled);
+        Array_free(&array);
+        assert(array == NULL);
+        assert(doubled == NULL);
     }
 
     printf("Test 8\n");
@@ -204,8 +212,10 @@ void testArray() {
         Array_print_int("%d", array);
         Array_print_int("%d", filtered);
 
-        Array_free(array);
-        Array_free(filtered);
+        Array_free(&array);
+        Array_free(&filtered);
+        assert(array == NULL);
+        assert(filtered == NULL);
     }
 
     printf("Test 9\n");
@@ -223,6 +233,27 @@ void testArray() {
 
         Array_print_int("%d", array);
 
-        Array_free(array);
+        Array_free(&array);
+        assert(array == NULL);
+    }
+
+    printf("Test 10\n");
+    {
+        Array_int array = Array_new_int();
+        Array_prealloc(8, array);
+        assert(array->allocated == 8);
+
+        for (int i = 0; i < 8; i++) {
+            Array_append_int(i, array);
+            assert(array->size == i+1);
+            assert(array->allocated == 8);
+        }
+
+        Array_append_int(-100, array);
+        assert(array->size == 9);
+        assert(array->allocated == 16);
+
+        Array_free(&array);
+        assert(array == NULL);
     }
 }

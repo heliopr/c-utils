@@ -1,7 +1,7 @@
 # c codebase
 
 ## data structures
-- [ ] list
+- [ ] array
 - [ ] linked list
     - queue
     - stack
