@@ -210,6 +210,7 @@ void testArray() {
 
         assert(array->size == n);
         assert(filtered->size == n/2 + (n%2==0?0:1));
+        assert(filtered->allocated*2 >= filtered->size);
 
         Array_print_int("%d", array);
         Array_print_int("%d", filtered);

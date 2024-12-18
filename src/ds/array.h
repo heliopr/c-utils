@@ -84,6 +84,7 @@
         if (array == NULL) return NULL;\
         if (filter == NULL) return NULL;\
         Array_##T newArray = Array_new_##T();\
+        Array_prealloc(array->allocated, newArray);\
         T *p = (T*)array->p;\
         for (size_t i = 0; i < array->size; i++) {\
             T val = p[i];\
@@ -91,6 +92,7 @@
                 Array_append_##T(val, newArray);\
             }\
         }\
+        _Array_optimizeAllocation(newArray);\
         return newArray;\
     }\
     void Array_remove_##T(size_t index, Array_##T array) {\
