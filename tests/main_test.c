@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 
-void testList();
+void testArray();
 
 void test(const char *name, void (*testFun)()) {
     printf("TEST %s\n", name);
@@ -10,5 +10,5 @@ void test(const char *name, void (*testFun)()) {
 }
 
 int main() {
-    test("List", testList);
+    test("Array", testArray);
 }
