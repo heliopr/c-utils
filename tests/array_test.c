@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <assert.h>
 #include <math.h>
+#include <time.h>
 #include "../src/ds/array.h"
+
 
 int mult(int x) {
     return x*2;
@@ -255,5 +257,31 @@ void testArray() {
 
         Array_free(&array);
         assert(array == NULL);
+    }
+
+    printf("Test 11\n");
+    {
+        srand(time(NULL));
+        Array_int array = Array_new_int();
+        
+        int n = 20;
+        for (int i = 0; i < n; i++) Array_append_int(rand() % 100, array);
+
+        Array_int clone = Array_clone(array);
+        assert(clone != array);
+        assert(clone->size == array->size);
+        assert(clone->allocated == array->allocated);
+        assert(clone->p != array->p);
+
+        for (int i = 0; i < n; i++) assert(Array_get_int(i, array) == Array_get_int(i, clone));
+
+        Array_remove_int(4, clone);
+        assert(Array_get_int(4, clone) == Array_get_int(5, array));
+        assert(clone->size+1 == array->size);
+
+        Array_free(&array);
+        Array_free(&clone);
+        assert(array == NULL);
+        assert(clone == NULL);
     }
 }

@@ -16,4 +16,6 @@ int main() {
     }
 
     Array_print_int("%d", array);
+
+    Array_free(&array);
 }

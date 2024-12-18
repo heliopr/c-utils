@@ -128,7 +128,9 @@ static void _Array_decreaseSize(Array array);
 
 
 Array Array_new(size_t elementSize);
+Array Array_clone(Array array);
 void Array_free(Array *array);
+void Array_prealloc(size_t elements, Array array);
 void Array_append(const void *value, Array array);
 void Array_appendPtr(const void *ptr, Array array);
 void Array_prepend(const void *value, Array array);
@@ -153,11 +155,22 @@ Array Array_new(size_t elementSize) {
     return array;
 }
 
+Array Array_clone(Array array) {
+    if (array == NULL) return NULL;
+    Array clone = Array_new(array->elementSize);
+    if (clone == NULL) return NULL;
+
+    Array_prealloc(array->allocated, clone);
+    clone->size = array->size;
+    memcpy(clone->p, array->p, array->size * array->elementSize);
+
+    return clone;
+}
+
 void Array_free(Array *arrayP) {
     if (arrayP == NULL) return;
     Array array = *arrayP;
     if (array == NULL) return;
-
 
     free(array->p);
     array->p = NULL;
