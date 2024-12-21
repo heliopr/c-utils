@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdint.h>
 
-#ifndef DS_ARRAY_H
-#define DS_ARRAY_H
+#ifndef _DS_ARRAY_H
+#define _DS_ARRAY_H
 
 #define ARRAY_IMPL(T) \
     typedef Array Array_##T;\
@@ -174,7 +174,10 @@ Array Array_clone(Array array) {
 void Array_free(Array *arrayP) {
     if (arrayP == NULL) return;
     Array array = *arrayP;
-    if (array == NULL) return;
+    if (array == NULL) {
+        free(arrayP);
+        return;
+    }
 
     free(array->p);
     array->p = NULL;
