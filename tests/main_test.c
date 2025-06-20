@@ -1,6 +1,5 @@
 #include <stdio.h>
 
-
 void testArray();
 
 void test(const char *name, void (*testFun)()) {

@@ -26,20 +26,17 @@
         ((T*)array->p)[array->size-1] = value;\
     }\
     \
-    void Array_prepend_##T(T value, Array_##T array) {\
+    void Array_print_##T(const char *format, Array_##T array) {\
         if (array == NULL) return;\
+        printf("Array{");\
         T *p = (T*)array->p;\
-        _Array_incrementSize(array);\
-        if (array->size > 1) {\
-            size_t i = array->size-1;\
-            while (1) {\
-                p[i+1] = p[i];\
-                if (i == 0) break;\
-                i--;\
-            }\
+        for (size_t i = 0; i < array->size; i++) {\
+            printf(format, p[i]);\
+            if (i < array->size-1) printf(", ");\
         }\
-        p[0] = value;\
+        printf("}\n");\
     }\
+    \
     void Array_insert_##T(T value, size_t index, Array_##T array) {\
         if (array == NULL) return;\
         if (index > array->size) return;\
@@ -54,15 +51,8 @@
         p[index] = value;\
     }\
     \
-    void Array_print_##T(const char *format, Array_##T array) {\
-        if (array == NULL) return;\
-        printf("Array{");\
-        T *p = (T*)array->p;\
-        for (size_t i = 0; i < array->size; i++) {\
-            printf(format, p[i]);\
-            if (i < array->size-1) printf(", ");\
-        }\
-        printf("}\n");\
+    void Array_prepend_##T(T value, Array_##T array) {\
+        Array_insert_##T(value, 0, array);\
     }\
     \
     Array_##T Array_map_##T(T (*mapFun)(T, size_t), Array_##T array) {\

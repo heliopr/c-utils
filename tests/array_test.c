@@ -15,7 +15,8 @@ bool filterTest(int x, size_t i) {
 
 void testArray() {
     int testInd = 1;
-    printf("Test %d\n", testInd);
+    
+    printf("Test %d Line %d\n", testInd, __LINE__);
     testInd++;
     {
         Array array = Array_new(sizeof(int));
@@ -47,7 +48,7 @@ void testArray() {
         assert(array == NULL);
     }
 
-    printf("Test %d\n", testInd);
+    printf("Test %d Line %d\n", testInd, __LINE__);
     testInd++;
     {
         Array_int array = Array_new_int();
@@ -71,7 +72,7 @@ void testArray() {
         assert(array == NULL);
     }
 
-    printf("Test %d\n", testInd);
+    printf("Test %d Line %d\n", testInd, __LINE__);
     testInd++;
     {
         typedef struct teste
@@ -100,7 +101,7 @@ void testArray() {
         assert(array == NULL);
     }
 
-    printf("Test %d\n", testInd);
+    printf("Test %d Line %d\n", testInd, __LINE__);
     testInd++;
     {
         Array_int array = Array_new_int();
@@ -126,7 +127,7 @@ void testArray() {
         assert(array == NULL);
     }
 
-    printf("Test %d\n", testInd);
+    printf("Test %d Line %d\n", testInd, __LINE__);
     testInd++;
     {
         Array_int array = Array_new_int();
@@ -160,7 +161,7 @@ void testArray() {
         assert(array == NULL);
     }
 
-    printf("Test %d\n", testInd);
+    printf("Test %d Line %d\n", testInd, __LINE__);
     testInd++;
     {
         Array_double array = Array_new_double();
@@ -184,7 +185,7 @@ void testArray() {
         assert(array == NULL);
     }
 
-    printf("Test %d\n", testInd);
+    printf("Test %d Line %d\n", testInd, __LINE__);
     testInd++;
     {
         Array_float array = Array_new_float();
@@ -205,7 +206,7 @@ void testArray() {
         assert(doubled == NULL);
     }
 
-    printf("Test %d\n", testInd);
+    printf("Test %d Line %d\n", testInd, __LINE__);
     testInd++;
     {
         Array_int array = Array_new_int();
@@ -230,7 +231,7 @@ void testArray() {
         assert(filtered == NULL);
     }
 
-    printf("Test %d\n", testInd);
+    printf("Test %d Line %d\n", testInd, __LINE__);
     testInd++;
     {
         Array_int array = Array_new_int();
@@ -250,7 +251,7 @@ void testArray() {
         assert(array == NULL);
     }
 
-    printf("Test %d\n", testInd);
+    printf("Test %d Line %d\n", testInd, __LINE__);
     testInd++;
     {
         Array_int array = Array_new_int();
@@ -271,7 +272,7 @@ void testArray() {
         assert(array == NULL);
     }
 
-    printf("Test %d\n", testInd);
+    printf("Test %d Line %d\n", testInd, __LINE__);
     testInd++;
     {
         srand(time(NULL));
@@ -298,7 +299,7 @@ void testArray() {
         assert(clone == NULL);
     }
 
-    printf("Test %d\n", testInd);
+    printf("Test %d Line %d\n", testInd, __LINE__);
     testInd++;
     {
         clock_t start = clock();
@@ -317,7 +318,7 @@ void testArray() {
         printf("Time: %fs\n", dt);
     }
 
-    printf("Test %d\n", testInd);
+    printf("Test %d Line %d\n", testInd, __LINE__);
     testInd++;
     {
         Array_int array = Array_new_int();
@@ -351,7 +352,7 @@ void testArray() {
         Array_free(&array);
     }
 
-    printf("Test %d\n", testInd);
+    printf("Test %d Line %d\n", testInd, __LINE__);
     testInd++;
     {
         typedef struct test {
@@ -384,7 +385,7 @@ void testArray() {
         Array_free(&array);
     }
 
-    printf("Test %d\n", testInd);
+    printf("Test %d Line %d\n", testInd, __LINE__);
     testInd++;
     {
         Array_int array = Array_new_int();
@@ -401,5 +402,39 @@ void testArray() {
         }
 
         Array_free(&array);
+    }
+
+    printf("Test %d Line %d\n", testInd, __LINE__);
+    testInd++;
+    {
+        Array_int array1 = Array_new_int();
+        Array_int array2 = Array_new_int();
+        int n = 10000;
+
+        clock_t start = clock();
+        for (int i = 0; i < n; i++) {
+            Array_insert_int(i, 0, array1);
+        }
+        double dt1 = (double)(clock()-start)/CLOCKS_PER_SEC;
+
+        start = clock();
+        for (int i = 0; i < n; i++) {
+            Array_insert(&i, 0, array2);
+        }
+        double dt2 = (double)(clock()-start)/CLOCKS_PER_SEC;
+
+        int a = n-1;
+        for (int i = 0; i < n; i++) {
+            assert(Array_get_int(i, array1) == a);
+            assert(Array_get_int(i, array2) == a);
+            a--;
+        }
+
+
+        printf("Time Array_insert_int: %.1fms\n", dt1*1000);
+        printf("Time Array_insert: %.1fms\n", dt2*1000);
+
+        Array_free(&array1);
+        Array_free(&array2);
     }
 }
