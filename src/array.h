@@ -47,11 +47,8 @@
         _Array_incrementSize(array);\
         T *p = (T*)array->p;\
         if (size > 0) {\
-            size_t i = size-1;\
-            while (1) {\
-                p[i+1] = p[i];\
-                if (i == index) break;\
-                i--;\
+            for (int i = size; i > index; i--) {\
+                p[i] = p[i-1];\
             }\
         }\
         p[index] = value;\

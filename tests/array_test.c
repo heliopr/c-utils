@@ -14,7 +14,9 @@ bool filterTest(int x) {
 }
 
 void testArray() {
-    printf("Test 1\n");
+    int testInd = 1;
+    printf("Test %d\n", testInd);
+    testInd++;
     {
         Array array = Array_new(sizeof(int));
         assert(array != NULL);
@@ -45,7 +47,8 @@ void testArray() {
         assert(array == NULL);
     }
 
-    printf("Test 2\n");
+    printf("Test %d\n", testInd);
+    testInd++;
     {
         Array_int array = Array_new_int();
         Array_append_int(10, array);
@@ -68,7 +71,8 @@ void testArray() {
         assert(array == NULL);
     }
 
-    printf("Test 3\n");
+    printf("Test %d\n", testInd);
+    testInd++;
     {
         typedef struct teste
         {
@@ -96,7 +100,8 @@ void testArray() {
         assert(array == NULL);
     }
 
-    printf("Test 4\n");
+    printf("Test %d\n", testInd);
+    testInd++;
     {
         Array_int array = Array_new_int();
 
@@ -121,7 +126,8 @@ void testArray() {
         assert(array == NULL);
     }
 
-    printf("Test 5\n");
+    printf("Test %d\n", testInd);
+    testInd++;
     {
         Array_int array = Array_new_int();
 
@@ -154,7 +160,8 @@ void testArray() {
         assert(array == NULL);
     }
 
-    printf("Test 6\n");
+    printf("Test %d\n", testInd);
+    testInd++;
     {
         Array_double array = Array_new_double();
 
@@ -177,7 +184,8 @@ void testArray() {
         assert(array == NULL);
     }
 
-    printf("Test 7\n");
+    printf("Test %d\n", testInd);
+    testInd++;
     {
         Array_float array = Array_new_float();
 
@@ -197,7 +205,8 @@ void testArray() {
         assert(doubled == NULL);
     }
 
-    printf("Test 8\n");
+    printf("Test %d\n", testInd);
+    testInd++;
     {
         Array_int array = Array_new_int();
 
@@ -221,7 +230,8 @@ void testArray() {
         assert(filtered == NULL);
     }
 
-    printf("Test 9\n");
+    printf("Test %d\n", testInd);
+    testInd++;
     {
         Array_int array = Array_new_int();
 
@@ -240,7 +250,8 @@ void testArray() {
         assert(array == NULL);
     }
 
-    printf("Test 10\n");
+    printf("Test %d\n", testInd);
+    testInd++;
     {
         Array_int array = Array_new_int();
         Array_prealloc(8, array);
@@ -260,7 +271,8 @@ void testArray() {
         assert(array == NULL);
     }
 
-    printf("Test 11\n");
+    printf("Test %d\n", testInd);
+    testInd++;
     {
         srand(time(NULL));
         Array_int array = Array_new_int();
@@ -286,7 +298,8 @@ void testArray() {
         assert(clone == NULL);
     }
 
-    printf("Test 12\n");
+    printf("Test %d\n", testInd);
+    testInd++;
     {
         clock_t start = clock();
         
@@ -304,7 +317,8 @@ void testArray() {
         printf("Time: %fs\n", dt);
     }
 
-    printf("Test 13\n");
+    printf("Test %d\n", testInd);
+    testInd++;
     {
         Array_int array = Array_new_int();
         _Array_optimizeAllocation(array);
@@ -337,7 +351,8 @@ void testArray() {
         Array_free(&array);
     }
 
-    printf("Test 14\n");
+    printf("Test %d\n", testInd);
+    testInd++;
     {
         typedef struct test {
             int x, y;
@@ -365,6 +380,25 @@ void testArray() {
         a.x = -100;
         assert(a2.x == 1);
         assert(a2.x != a.x);
+
+        Array_free(&array);
+    }
+
+    printf("Test %d\n", testInd);
+    testInd++;
+    {
+        Array_int array = Array_new_int();
+
+        int n = 10000;
+        for (int i = 0; i < n; i++) {
+            Array_insert_int(i, 0, array);
+        }
+
+        int a = n-1;
+        for (int i = 0; i < n; i++) {
+            assert(Array_get_int(i, array) == a);
+            a--;
+        }
 
         Array_free(&array);
     }
