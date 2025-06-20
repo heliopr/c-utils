@@ -77,7 +77,7 @@
         }\
         return newArray;\
     }\
-    Array_##T Array_filter_##T(bool (*filter)(T), Array_##T array) {\
+    Array_##T Array_filter_##T(bool (*filter)(T, size_t), Array_##T array) {\
         if (array == NULL) return NULL;\
         if (filter == NULL) return NULL;\
         Array_##T newArray = Array_new_##T();\
@@ -85,7 +85,7 @@
         T *p = (T*)array->p;\
         for (size_t i = 0; i < array->size; i++) {\
             T val = p[i];\
-            if (filter(val)) {\
+            if (filter(val, i)) {\
                 Array_append_##T(val, newArray);\
             }\
         }\

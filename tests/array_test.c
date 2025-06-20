@@ -9,7 +9,7 @@ int mult(int x, size_t i) {
     return x*2;
 }
 
-bool filterTest(int x) {
+bool filterTest(int x, size_t i) {
     return x%2 == 0;
 }
 
