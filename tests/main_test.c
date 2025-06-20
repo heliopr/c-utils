@@ -2,7 +2,6 @@
 
 
 void testArray();
-void testArena();
 
 void test(const char *name, void (*testFun)()) {
     printf("TEST %s\n", name);
@@ -11,7 +10,6 @@ void test(const char *name, void (*testFun)()) {
 }
 
 int main() {
-    test("Array", testArray);
-    test("Arena", testArena);
-    printf("All tests passed\n");
+    test("ARRAY", testArray);
+    printf("ALL TESTS PASSED!\n");
 }

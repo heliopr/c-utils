@@ -2,10 +2,10 @@
 #include <assert.h>
 #include <math.h>
 #include <time.h>
-#include "../src/ds/array.h"
+#include "../src/array.h"
 
 
-int mult(int x) {
+int mult(int x, size_t i) {
     return x*2;
 }
 
@@ -297,6 +297,7 @@ void testArray() {
                 Array_append(&i, array);
             }
             Array_free(&array);
+            assert(array == NULL);
         }
 
         double dt = (double)(clock()-start)/CLOCKS_PER_SEC;
@@ -332,6 +333,38 @@ void testArray() {
         assert(array->allocated == 1);
 
         Array_print_int("%d", array);
+
+        Array_free(&array);
+    }
+
+    printf("Test 14\n");
+    {
+        typedef struct test {
+            int x, y;
+        } test_t;
+        Array array = Array_new(sizeof(test_t));
+
+        test_t a = {1, 2}, b = {3, 4};
+        Array_append(&b, array);
+        Array_append(&a, array);
+
+        assert(array->allocated == 2);
+        assert(array->size == 2);
+        assert(array->elementSize == sizeof(test_t));
+
+        test_t a2, b2;
+        a2 = ARRAY_GET(test_t, 1, array);
+        b2 = ARRAY_GET(test_t, 0, array);
+        printf("a = test_t{x=%d, y=%d}, b = test_t{x=%d, y=%d}\n", a2.x, a2.y, b2.x, b2.y);
+
+        assert(a.x == a2.x);
+        assert(a.y == a2.y);
+        assert(b.x == b2.x);
+        assert(b.y == b2.y);
+
+        a.x = -100;
+        assert(a2.x == 1);
+        assert(a2.x != a.x);
 
         Array_free(&array);
     }

@@ -1,9 +1,8 @@
-test:
-	gcc ./tests/*.c -lm -O0 -o testsout
-	./testsout
+buildtest: $(wildcard tests/*.c)
+	gcc $^ -Wall -lm -O0 -o test
 
-run:
-	./out
+test: buildtest
+	./test
 
 clean:
-	rm ./out
+	rm ./test

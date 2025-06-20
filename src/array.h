@@ -68,14 +68,14 @@
         printf("}\n");\
     }\
     \
-    Array_##T Array_map_##T(T (*mapFun)(T), Array_##T array) {\
+    Array_##T Array_map_##T(T (*mapFun)(T, size_t), Array_##T array) {\
         if (array == NULL) return NULL;\
         if (mapFun == NULL) return NULL;\
         Array_##T newArray = Array_new_##T();\
         Array_prealloc(array->allocated, newArray);\
         T *p = (T*)array->p;\
         for (size_t i = 0; i < array->size; i++) {\
-            T mappedVal = (*mapFun)(p[i]);\
+            T mappedVal = (*mapFun)(p[i], i);\
             Array_append_##T(mappedVal, newArray);\
         }\
         return newArray;\

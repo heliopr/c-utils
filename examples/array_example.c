@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "../src/ds/array.h"
+#include "../src/array.h"
 
 int main() {
     Array_int array = Array_new_int();

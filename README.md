@@ -1,4 +1,4 @@
-# c codebase
+# c utils
 
 ## data structures
 - [ ] array
@@ -11,8 +11,9 @@
 - [ ] vector
 - [ ] matrix
 - [ ] tensor
+- [ ] bignum
+- [ ] fixed point number
 
 # util
 - [ ] basic testing
 - [ ] dynamic string
-- [ ] arena
