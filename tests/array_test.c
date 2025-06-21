@@ -13,6 +13,12 @@ bool filterTest(int x, size_t i) {
     return x%2 == 0;
 }
 
+int cmp(const void *x, const void *y) {
+    int a = *((int*)x);
+    int b = *((int*)y);
+    return a-b;
+}
+
 void testArray() {
     int testInd = 1;
     
@@ -436,5 +442,26 @@ void testArray() {
 
         Array_free(&array1);
         Array_free(&array2);
+    }
+
+    printf("Test %d Line %d\n", testInd, __LINE__);
+    testInd++;
+    {
+        srand(time(NULL));
+        Array_int array = Array_new_int();
+
+        for (int i = 0; i < 10; i++) {
+            Array_append_int(rand()%10, array);
+        }
+
+        Array_print_int("%d", array);
+
+        Array_sort(cmp, array);
+        Array_print_int("%d", array);
+        for (int i = 1; i < array->size; i++) {
+            assert(Array_get_int(i, array) >= Array_get_int(i-1, array));
+        }
+
+        Array_free(&array);
     }
 }

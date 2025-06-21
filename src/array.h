@@ -209,7 +209,7 @@ void *Array_get(size_t index, Array array) {
     return ARRAY_PTR_IND(index, array);
 }
 
-void Array_insert( const void *value, size_t index, Array array) {
+void Array_insert(const void *value, size_t index, Array array) {
     if (array == NULL) return;
     if (index > array->size) return;
 
@@ -217,6 +217,13 @@ void Array_insert( const void *value, size_t index, Array array) {
     _Array_incrementSize(array);
     memcpy(ARRAY_PTR_IND(index+1, array), ARRAY_PTR_IND(index, array), (size-index)*array->elementSize);
     memcpy(ARRAY_PTR_IND(index, array), value, array->elementSize);
+}
+
+void Array_sort(int (*cmpFun)(const void*, const void*), Array array) {
+    if (array == NULL) return;
+    if (cmpFun == NULL) return;
+
+    qsort(array->p, array->size, array->elementSize, cmpFun);
 }
 
 
